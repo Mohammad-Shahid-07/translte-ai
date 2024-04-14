@@ -137,8 +137,17 @@ const Page = () => {
     setLoading(true);
     try {
       const { message, tone, language } = values;
-      if (!values.message || !values.tone || !values.language) {
-        form.setError("language", { message: "Please add messages" });
+      if (!message || !tone || !language) {
+        if (!message) {
+          form.setError("message", { message: "Please add a message" });
+        }
+        if (!tone) {
+          form.setError("tone", { message: "Please select a tone" });
+        }
+        if (!language) {
+          form.setError("language", { message: "Please select a language" });
+        }
+        return;
       }
 
       const res = await sendMessage(message, tone, language);

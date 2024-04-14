@@ -5,7 +5,7 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="bg-[#363535]">
+    <div className="bg-[#363535] fixed w-screen">
       <nav className="flex  justify-between items-center">
         <div>
           <Link href="/">
@@ -19,7 +19,10 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex  gap-5 p-5">
-          <Link href="https://github.com/Mohammad-Shahid-07/translte-ai">
+          <Link
+            href="https://github.com/Mohammad-Shahid-07/translte-ai"
+            target="_blank"
+          >
             <GitHubLogoIcon className="h-8 w-8 invert bg-white rounded-full" />
           </Link>
         </div>

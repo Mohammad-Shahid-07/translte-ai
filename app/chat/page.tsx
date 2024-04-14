@@ -117,6 +117,7 @@ const Page = () => {
     { label: "Formal", value: "formal" },
     { label: "Casual", value: "casual" },
   ]);
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -132,46 +133,41 @@ const Page = () => {
       parts: [{ text: values.message }],
     };
     setUserMessages((prevUserMessages) => [...prevUserMessages, newMessage]);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    await setMessages((prevMessages) => [...prevMessages, newMessage]);
+    setLoading(true);
+    try {
+      const { message, tone, language } = values;
+      if (!values.message || !values.tone || !values.language) {
+        form.setError("language", { message: "Please add messages" });
+      }
+
+      const res = await sendMessage(message, tone, language);
+      if (res) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { role: "model", parts: [{ text: res }] },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+
     form.setValue("message", "");
   }
 
   useEffect(() => {
     const savedMessages = localStorage.getItem("messages");
-    console.log(savedMessages);
-
     if (savedMessages) {
       setMessages(JSON.parse(savedMessages));
-      console.log(savedMessages);
     }
   }, []);
-
-  console.log(messages);
 
   useEffect(() => {
     if (messages.length === 0) return;
     localStorage.setItem("messages", JSON.stringify(messages));
   }, [messages]);
-  useEffect(() => {
-    const sendText = async () => {
-      try {
-        if (messages.length > 0) {
-          const { tone, language } = form.getValues();
-          const res = await sendMessage(messages, tone, language);
-          if (res) {
-            setMessages([
-              ...messages,
-              { role: "model", parts: [{ text: res }] },
-            ]);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    sendText();
-  }, [userMessages]);
   const handleDelete = () => {
     setMessages([]);
     setUserMessages([]);
@@ -179,30 +175,15 @@ const Page = () => {
   };
 
   return (
-    <div className="flex  h-[calc(100dvh)] flex-col bg-[#212121] ">
+    <div className="flex pt-10 h-[calc(100dvh)] flex-col bg-[#212121] ">
       <div className="h-fit custom-scrollbar overflow-y-auto">
         <ChatUi messages={messages} />
-      </div>
-      <div className="ml-auto mr-5 absolute bottom-20 right-6">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <TrashIcon
-                className="h-6 w-6 text-red-500"
-                onClick={() => handleDelete()}
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Detele Your Chats</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       </div>
 
       <div className="flex mt-auto items-center justify-end flex-col">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto">
-            <div className="flex justify-between w-[80vw]  ">
+            <div className="flex flex-wrap justify-between w-[80vw]  ">
               <FormField
                 control={form.control}
                 name="language"
@@ -431,9 +412,15 @@ const Page = () => {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="mt-2">
-                send
-              </Button>
+              <div className="flex  mt-2 gap-5">
+                <Button type="submit" disabled={loading}>
+                  {loading ? "Translating..." : "Send"}
+                </Button>
+
+                <Button onClick={() => handleDelete()} variant={"destructive"}>
+                  Delete Chats
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

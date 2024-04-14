@@ -6,7 +6,7 @@ import {
   HarmProbability,
 } from "@google/generative-ai";
 export async function sendMessage(
-  messages: Message[],
+  message: string,
   tone: string,
   language: string,
 ) {
@@ -59,14 +59,10 @@ export async function sendMessage(
       ],
     });
 
-    const arrayLength = messages.length;
-    const msg = messages[arrayLength - 1].parts[0].text;
-    console.log(msg);
 
-    const result = await chat.sendMessage(msg);
+    const result = await chat.sendMessage(message);
     const response = await result.response;
     const text = response.text();
-    console.log(text);
 
     return text;
   } catch (error) {

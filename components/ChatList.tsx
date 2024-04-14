@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { AvatarIcon, PauseIcon, PlayIcon } from "@radix-ui/react-icons";
 import useSpeechSynthesis from "@/hooks/useSpeechSynthesis";
 import React, { useRef, useState, useEffect } from "react";
+import { CopyIcon } from "@radix-ui/react-icons";
 
 export default function ChatList({ messages }: { messages: Message[] }) {
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -38,7 +38,15 @@ export default function ChatList({ messages }: { messages: Message[] }) {
       resume();
     }
   };
-
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      // Optionally, you can provide feedback to the user after successful copying
+      console.log("Text copied to clipboard:", text);
+    } catch (error) {
+      console.error("Failed to copy text:", error);
+    }
+  };
   if (messages.length === 0) {
     return (
       <div className="w-full custom-scrollbar min-h-[calc(80dvh)] flex justify-center items-center">
@@ -75,9 +83,9 @@ export default function ChatList({ messages }: { messages: Message[] }) {
             <div className="flex gap-3 items-center">
               {message.role === "user" && (
                 <div className="flex items-end gap-3">
-                  <span className="text-white p-3 rounded-md max-w-xs sm:max-w-2xl overflow-x-auto bg-transparent border">
+                  <p className="text-white p-3 rounded-md max-w-xs sm:max-w-2xl overflow-x-auto bg-transparent border">
                     {message.parts[0].text}
-                  </span>
+                  </p>
                 </div>
               )}
               {message.role === "model" && (
@@ -85,7 +93,11 @@ export default function ChatList({ messages }: { messages: Message[] }) {
                   <span className="bg-accent p-3 rounded-md max-w-xs sm:max-w-2xl overflow-x-auto">
                     {message.parts[0].text.split("```").map((part, index) => (
                       <React.Fragment key={index}>
-                        <div>{part}</div>
+                        <p>{part}</p>
+                        <CopyIcon
+                          onClick={() => handleCopy(part)}
+                          className="cursor-pointer hover:text-green-500"
+                        />
                         {/* {currentSpeakingIndex === index && speaking ? (
                           <PauseIcon
                             onClick={handlePause}

@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Transle Ai
+
+The Transle Ai is a user-friendly tool that utilizes artificial intelligence to translate text from one language to another, with the option to choose between different tones. It provides a chat-like user interface, making it easy for users to paste their text and receive AI-generated responses.
+
+## Features
+
+- Translate text from one language to another.
+- Choose between different tones for the translation.
+- User-friendly chat-like interface for easy interaction.
+- Seamless integration of AI translation technology.
+
+## How to Use
+
+1. **Access the Application:**
+
+   - Visit the Transle Ai website.
+
+2. **Paste Text:**
+
+   - In the chat-like interface, paste the text you want to translate.
+
+3. **Choose Language and Tone:**
+
+   - Select the desired target language for translation.
+   - Choose the tone for the translation (e.g., formal, casual, romantic).
+
+4. **Receive Translation:**
+
+   - The AI will generate a translation based on the provided text, language, and tone.
+   - The translated text will be displayed in the chat interface.
+
+5. **Interact and Repeat:**
+   - You can continue to interact with the application by pasting more text and selecting different languages and tones.
 
 ## Getting Started
 
-First, run the development server:
+To set up the Transle Ai locally for development or testing purposes, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the Repository:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```
+   git clone https://github.com/Mohammad-Shahid-07/translte-ai.git
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. **Install Dependencies:**
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```
+   cd translte-ai
+   npm install
+   ```
 
-## Learn More
+3. **Start the Development Server:**
 
-To learn more about Next.js, take a look at the following resources:
+   ```
+   npm start
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Access the Application:**
+   - Open your web browser and navigate to `http://localhost:3000` to access the application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Technologies Used
 
-## Deploy on Vercel
+- React.js: Frontend development framework for building user interfaces.
+- AI Translation API: Integration of AI-powered translation services for text translation.
+- localStorage: Utilized for storing user messages locally to provide a seamless user experience across sessions.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Contributions are welcome! If you'd like to contribute to the Translate Ai, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature-name`).
+3. Make your changes and commit them (`git commit -am 'Add new feature'`).
+4. Push to the branch (`git push origin feature/your-feature-name`).
+5. Create a new pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
